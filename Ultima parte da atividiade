@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Diretório de origem dos dados a serem copiados
+DIR_ORIGEM="/caminho/para/os/seus/dados"
+
+# Diretório de destino do backup
+DIR_DESTINO="c:/backups/mes01/Basedomes"
+
+# Nome do arquivo de backup
+ARQUIVO_BACKUP="backup_incr_$(date +%Y%m%d%H%M%S).tar.gz"
+
+# Executa o backup incremental
+tar -czf "$DIR_DESTINO/$ARQUIVO_BACKUP" -g "$DIR_DESTINO/snapshot.file" "$DIR_ORIGEM"
+
+# Exclui backups antigos conforme a política de retenção
+find "$DIR_DESTINO" -name 'backup_incr_*' -mtime +7 -exec rm {} \;
