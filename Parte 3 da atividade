@@ -1,0 +1,21 @@
+# Obtém as GPOs aplicadas à máquina atual
+$GPOsAplicadas = Get-GPO -All | ForEach-Object {
+    $GPO = $_
+    $GPOReport = New-Object PSObject -Property @{
+        DisplayName = $GPO.DisplayName
+        Id = $GPO.Id
+        Description = $GPO.Description
+        CreatedTime = $GPO.CreatedTime
+        ModifiedTime = $GPO.ModifiedTime
+        Enabled = if ($GPO.Enabled) { "Sim" } else { "Não" }
+    }
+    $GPOReport
+}
+
+# Caminho do arquivo de saída
+$ArquivoSaida = "GPOs_Aplicadas.txt"
+
+# Gera o relatório das GPOs aplicadas e salva no arquivo
+$GPOsAplicadas | Export-Csv -Path $ArquivoSaida -Delimiter "`t" -NoTypeInformation
+
+Write-Host "As GPOs aplicadas foram salvas em: $ArquivoSaida"
